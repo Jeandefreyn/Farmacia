@@ -1,0 +1,26 @@
+.ui-widget .ui-widget {
+	font-size: 13px !important;
+}
+
+.textoCentro {
+	text-align: center !important;
+}
+
+.fundoBotaoLaranja {
+	background: #ff9d00 !important;
+	border: 1px solid #ff9d00 !important;
+}
+
+.fundoBotaoVermelho {
+	background: #e80000 !important;
+	border: 1px solid #e80000 !important;
+}
+
+.fundoBotaoVerde {
+	background: #16bf00 !important;
+	border: 1px solid #16bf00 !important;
+}
+
+.negrito {
+	text-weight: bold !important;	
+}

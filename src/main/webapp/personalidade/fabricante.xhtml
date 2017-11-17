@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Fabricante" />
+		<ui:param name="bean" value="#{fabricanteBean}" />
+		<ui:param name="entidade" value="#{fabricanteBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir fabricante?" />
+	
+		<ui:define name="pesquisa">
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+		
+			<p:column headerText="Razão Social">
+				<h:outputText value="#{item.razaoSocial}" />
+			</p:column>
+			
+			<p:column headerText="Nome Fantasia">
+				<h:outputText value="#{item.nomeFantasia}" />
+			</p:column>
+			
+			<p:column headerText="CNPJ">
+				<h:outputText value="#{item.cnpj}" />
+			</p:column>
+			
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="1">
+					<p:outputLabel value="CNPJ:" for="txtCnpj"/>
+					<p:inputMask id="txtCnpj" value="#{entidade.cnpj}" mask="99.999.999/9999-99" style="width:300px;" required="true" requiredMessage="O campo CNPJ não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Razão Social:" for="txtRazaoSocial"/>
+					<p:inputText id="txtRazaoSocial" value="#{entidade.razaoSocial}" style="width:300px;" required="true" requiredMessage="O campo Razão Social não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Nome Fantasia:" for="txtNomeFantasia"/>
+					<p:inputText id="txtNomeFantasia" value="#{entidade.nomeFantasia}" style="width:300px;" required="true" requiredMessage="O campo Nome Fantasia não pode ser em branco"/>
+				</h:panelGrid>
+			
+			</h:panelGrid>
+			
+			<p:fieldset legend="Endereço" id="fieldsetEndereco">
+			
+				<h:panelGrid columns="2">
+					<h:panelGrid columns="1">
+						<p:outputLabel value="CEP:" for="txtCep"/>
+						<p:inputMask mask="99.999-999" id="txtCep" value="#{entidade.endereco.cep}" style="width:300px;" required="true" requiredMessage="O campo CEP não pode ser em branco">
+							<p:ajax event="blur" listener="#{bean.procurarEndereco}" update="fieldsetEndereco"/>
+						</p:inputMask>
+					</h:panelGrid>
+				
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Logradouro:" for="txtLogradouro"/>
+						<p:inputText id="txtLogradouro" value="#{entidade.endereco.logradouro}" style="width:300px;" required="true" requiredMessage="O campo Logradouro não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2">
+						
+						<h:panelGrid columns="1" id="numeroEndereco">
+							<p:outputLabel value="Número:" for="txtNumero"/>
+							<p:inputText id="txtNumero" value="#{entidade.endereco.numero}" style="width:180px;" disabled="#{entidade.endereco.semNumero}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" style="margin-top:25px;">
+							<p:selectBooleanCheckbox value="#{entidade.endereco.semNumero}">
+								<p:ajax update="numeroEndereco" listener="#{bean.limparNumeroEndereco}"/>
+							</p:selectBooleanCheckbox>
+							<p:outputLabel value="Sem número"/>
+						</h:panelGrid>
+						
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Complemento:" for="txtComplemento"/>
+						<p:inputText id="txtComplemento" value="#{entidade.endereco.complemento}" style="width:300px;"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Bairro:" for="txtBairro"/>
+						<p:inputText id="txtBairro" value="#{entidade.endereco.bairro}" style="width:300px;" required="true" requiredMessage="O campo Bairro não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Estado:" for="txtEstado"/>
+						<p:selectOneMenu id="txtEstado" style="width:300px;" value="#{entidade.endereco.cidade.estado.id}">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+							<f:selectItems var="es" value="#{bean.estados}" itemLabel="#{es.uf} - #{es.nome}" itemValue="#{es.id}"/>
+							<p:ajax update="cidades" listener="#{bean.carregarCidades}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" id="cidades">
+						<p:outputLabel value="Cidade:" for="txtCidade"/>
+						<p:selectOneMenu id="txtCidade" style="width:300px;" value="#{entidade.endereco.cidade.id}" required="true" requiredMessage="O campo Cidade não pode ser em branco">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+							<f:selectItems var="cd" value="#{bean.cidades}" itemLabel="#{cd.nome} - #{cd.estado.uf}" itemValue="#{cd.id}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+				</h:panelGrid>
+			</p:fieldset>
+			
+		</ui:define>
+	
+	</ui:composition>
+</html>

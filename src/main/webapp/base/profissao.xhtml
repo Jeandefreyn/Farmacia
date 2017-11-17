@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Profissão" />
+		<ui:param name="bean" value="#{profissaoBean}" />
+		<ui:param name="entidade" value="#{profissaoBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir profissão?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Nome:" />
+				<p:inputText style="width:300px;" value="#{entidade.nome}"/>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<p:outputLabel value="CBO:" />
+				<p:inputMask mask="9999.99" style="width:300px;" value="#{entidade.cbo}" />
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Nome" sortBy="#{item.nome}">
+		    	<h:outputLabel value="#{item.nome}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Nome:" for="txtNome"/>
+				<p:inputText id="txtNome" style="width:300px;" value="#{entidade.nome}" required="true" requiredMessage="O campo Nome não pode ser em branco"/>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="CBO:" for="txtCbo"/>
+				<p:inputMask mask="9999.99" id="txtCbo" style="width:300px;" value="#{entidade.cbo}" required="true" requiredMessage="O campo CBO não pode ser em branco"/>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+	</ui:composition>
+</html>

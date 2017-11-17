@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Usuario" />
+		<ui:param name="bean" value="#{usuarioBean}" />
+		<ui:param name="entidade" value="#{usuarioBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir usuario?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Login:" />
+				<p:inputText style="width:300px;" value="#{entidade.login}"/>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Login" sortBy="#{item.nome}">
+		    	<h:outputLabel value="#{item.login}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Login:" for="txtLogin"/>
+					<p:inputText id="txtLogin" maxlength="20" style="width:300px;" value="#{entidade.login}" required="true" requiredMessage="O campo Login não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Senha:" for="txtSenha"/>
+					<p:password id="txtSenha" style="width:300px;" redisplay="true" value="#{entidade.senha}" required="true" requiredMessage="O campo Senha não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Nome:" for="txtNome"/>
+					<p:inputText id="txtNome" style="width:300px;" value="#{entidade.nome}" required="true" requiredMessage="O campo Nome não pode ser em branco"/>
+				</h:panelGrid>
+		
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Data de nascimento:" for="txtDataNascimento"/>
+					<p:calendar id="txtDataNascimento" size="40" value="#{entidade.dataNascimento}" required="true" requiredMessage="O campo Data de Nascimento não pode ser em branco" pattern="dd/MM/yyyy"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="RG:" for="txtRg"/>
+					<p:inputText id="txtRg" style="width:300px;" value="#{entidade.rg}" required="true" requiredMessage="O campo RG não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="CPF:" for="txtCpf"/>
+					<p:inputMask mask="999.999.999-99" id="txtCpf" style="width:300px;" value="#{entidade.cpf}" required="true" requiredMessage="O campo CPF não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Sexo:" for="txtSexo"/>
+					<p:selectOneMenu id="txtSexo" style="width:282px;" value="#{entidade.sexo.id}">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems var="sx" value="#{bean.sexos}" itemLabel="#{sx.nome}" itemValue="#{sx.id}"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Profissão:" for="txtProfissao"/>
+					<p:selectOneMenu id="txtProfissao" style="width:282px;" value="#{entidade.profissao.id}">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems var="prof" value="#{bean.profissoes}" itemLabel="#{prof.nome}" itemValue="#{prof.id}"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Estado de nascimento:" for="txtEstadoNascimento"/>
+					<p:selectOneMenu id="txtEstadoNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.estado.id}">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems var="es" value="#{bean.estados}" itemLabel="#{es.nome}" itemValue="#{es.id}"/>
+						<p:ajax listener="#{bean.carregarCidades}" update=":formCadastro:cidades"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" id="cidades">
+					<p:outputLabel value="Cidade de nascimento:" for="txtCidadeNascimento"/>
+					<p:selectOneMenu id="txtCidadeNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.id}">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems var="cd" value="#{bean.cidades}" itemLabel="#{cd.nome}" itemValue="#{cd.id}"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+			</h:panelGrid>
+		</ui:define>
+	
+	</ui:composition>
+</html>

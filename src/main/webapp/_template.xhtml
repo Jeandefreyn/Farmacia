@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<f:view contentType="text/html" />
+	
+	<h:head>
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+		<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+		<h:outputStylesheet library="css" name="estilo.css"/>
+		<title><ui:insert name="titulo">#{modulo}</ui:insert></title>
+	</h:head>
+	
+	<h:body>
+	
+		<p:growl id="msg" autoUpdate="true"/>
+	
+		<p:layout fullPage="true" widgetVar="layoutWdgt">
+			
+			<ui:insert name="barraLateral">
+				<p:layoutUnit position="west" size="210" header="Menu" resizable="false" collapsible="true">
+					
+					<div id="logo" class="divLogo" style="text-align:center;">
+						<p:graphicImage library="imgs" name="logo.png"/>
+					</div>
+					
+					<h:form id="menu">
+					
+						<p:menu toggleable="true" style="width:190px;">
+					        <p:submenu label="Base">
+					            <p:menuitem value="Tipo de Receita" url="/base/tipo_receita.xhtml" icon="fa fa-medkit"/>
+					            <p:menuitem value="Sexo" url="/base/sexo.xhtml" icon="fa fa-mars"/>
+					            <p:menuitem value="Profissão" url="/base/profissao.xhtml" icon="fa fa-archive"/>
+					        </p:submenu>
+					        <p:submenu label="Localização">
+					            <p:menuitem value="Cidade" url="/localizacao/cidade.xhtml" icon="fa fa-map-marker"/>
+					            <p:menuitem value="Estado" url="/localizacao/estado.xhtml" icon="fa fa-map-marker" />
+					        </p:submenu>
+					        <p:submenu label="Gerencial">
+					            <p:menuitem value="Recurso" url="/gerencial/recurso.xhtml" icon="fa fa-user-circle" />
+					            <p:menuitem value="Usuário" url="/gerencial/usuario.xhtml" icon="fa fa-user-circle" />
+					        </p:submenu>
+					        <p:submenu label="Personalidade">
+					            <p:menuitem value="Paciente" url="/personalidade/paciente.xhtml" icon="fa fa-smile-o" />
+					            <p:menuitem value="Fabricante" url="/personalidade/fabricante.xhtml" icon="fa fa-building" />
+					            <p:menuitem value="Marca" url="/personalidade/marca.xhtml" icon="fa fa-cubes" />
+					        </p:submenu>
+					        <p:submenu label="Dispensação">
+					            <p:menuitem value="Lote" url="/dispensacao/lote.xhtml" icon="fa fa-barcode" />
+					        </p:submenu>
+						</p:menu>
+					
+					</h:form>
+					
+					<h:form>
+						<h:panelGrid columns="1" style="text-align:center; margin-left:25px;">
+							<h:outputText value="#{bean.loginSession.login}" style="font-size:12px; font-weight:bold;"/>
+							<p:commandButton process="@this" styleClass="fundoBotaoVermelho" action="#{loginBean.encerrarSessao()}" value="Encerrar sessão" icon="fa fa-power-off"/>
+						</h:panelGrid>
+					</h:form>
+					
+				</p:layoutUnit>
+			</ui:insert>
+			
+			<p:layoutUnit position="center">			
+				
+				<p:panel header="#{modulo}">
+					<ui:insert name="conteudo">
+			
+						<h:form>
+							<p:fieldset legend="Filtrar por:" toggleable="true" collapsed="true">
+							
+								<h:panelGrid columns="2">
+									<ui:insert name="pesquisa"/>							
+								</h:panelGrid>
+								
+								<p:commandButton value="Pesquisar" ajax="true" process="@form" action="#{bean.listar}" update=":formTabela" />
+							</p:fieldset>
+						</h:form>
+						
+						<br/>
+						
+						<h:panelGrid columns="1">
+							<h:form id="formTabela">
+								<p:dataTable id="tabela" emptyMessage="Sem registros cadastrados" value="#{bean.lista}" var="item" paginator="true" rows="10" paginatorPosition="bottom">
+	
+									<ui:insert name="lista"/>									
+									
+								    <p:column headerText="Opções" style="text-align:center;">
+								    	<p:commandButton styleClass="fundoBotaoLaranja" icon="ui-icon-pencil" oncomplete="PF('dlg').show();" update=":formCadastro:panelForm" action="#{bean.alterar}">
+								    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+								    	</p:commandButton>
+								    	<p:commandButton styleClass="fundoBotaoVermelho" icon="ui-icon-trash" oncomplete="PF('dialogExclusao').show();" update="formTabela:tabela msg" action="#{bean.prepareExcluir}">
+								    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+								    	</p:commandButton>
+								    </p:column>
+								 
+								    <f:facet name="footer">
+										<p:commandButton value="Novo" styleClass="fundoBotaoVerde" actionListener="#{bean.limpar()}" oncomplete="PF('dlg').show();"/>
+									</f:facet>
+								 
+								</p:dataTable>
+							</h:form>
+							
+						</h:panelGrid>
+					</ui:insert>
+				</p:panel>
+			</p:layoutUnit>
+			
+			<ui:insert name="dialogs">
+				<p:dialog header="#{modulo}" widgetVar="dlg" resizable="false" draggable="false" modal="true" closable="false" style="max-height:500px; overflow:auto;">
+			
+					<h:form id="formCadastro">
+					
+						<h:panelGrid columns="1" id="panelForm">
+							<ui:insert name="cadastro"/>
+						</h:panelGrid>
+		
+						<h:panelGrid columns="2">
+							<p:commandButton value="Salvar" styleClass="botaoVerde" update="formCadastro:panelForm msg formTabela:tabela" action="#{bean.cadastrar}"/>
+							<p:commandButton value="Cancelar" process="@this" action="#{bean.limpar()}" update="formCadastro:panelForm" oncomplete="PF('dlg').hide();"/>
+						</h:panelGrid>
+					</h:form>
+				</p:dialog>
+				
+				<p:dialog widgetVar="dialogExclusao" showEffect="fade" hideEffect="fade" header="#{mensagemExclusao}">
+					<h:form id="formConfirm">
+						<p:commandButton process="@form" action="#{bean.excluir}" update="formCadastro:panelForm msg formTabela:tabela" oncomplete="PF('dialogExclusao').hide();" value="Sim" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+						<p:commandButton process="@this" action="#{bean.limpar}" update="formCadastro:panelForm" oncomplete="PF('dialogExclusao').hide();" value="Não" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+					</h:form>
+				</p:dialog>
+			</ui:insert>
+			
+			<ui:insert name="outros" />
+		</p:layout>
+	</h:body>
+</html>

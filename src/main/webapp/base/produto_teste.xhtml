@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<f:view contentType="text/html" />
+	
+	<h:head>
+	    <meta http-equiv="Content-Type" content="text/html;charset=UTF8" />
+		<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+		<link rel="stylesheet" type="text/css" href="../resources/estilo.css"/>
+		<title>Teste de upload de imagem</title>
+	</h:head>
+	
+	<h:body>
+		<p:growl id="msg"/>
+		<p:panel header="Teste de produto">
+			<h:form id="frmCad" enctype="multipart/form-data">
+				<h:panelGrid id="telaCad" columns="1">
+					<h:outputLabel value="Nome" />
+					<p:inputText size="20" maxlength="30" value="#{produtoTesteBean.entidade.nome}"/>
+					
+					<h:outputLabel value="Imagem" />
+					<p:fileUpload auto="true" id="fileUp" mode="advanced" fileUploadListener="#{produtoTesteBean.upload}" update=":msg"/>
+					
+					<p:commandButton value="Salvar" actionListener="#{produtoTesteBean.cadastrar}" update="frmCad :msg"/>
+				</h:panelGrid>
+			</h:form>
+			
+			<h:form id="frmView">
+				<h:panelGrid columns="1" id="telaView">
+					<p:outputLabel value="ID"/>
+					<p:inputText size="10" value="#{produtoTesteBean.entidade.id}"/>
+					<p:commandButton value="Buscar" actionListener="#{produtoTesteBean.buscarImagem}" update="frmView:telaView"/>
+					<p:outputLabel value="#{produtoTesteBean.entidade.nome}"/>
+					<p:graphicImage cache="false" value="#{produtoTesteViewBean.imagem}">
+						<f:param name="parId" value="#{produtoTesteBean.entidade.id}"/>
+					</p:graphicImage>
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	</h:body>
+	
+</html>

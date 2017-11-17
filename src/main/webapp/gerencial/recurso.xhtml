@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Recurso" />
+		<ui:param name="bean" value="#{recursoBean}" />
+		<ui:param name="entidade" value="#{recursoBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir recurso?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Nome:" />
+				<p:inputText style="width:300px;" value="#{entidade.nome}"/>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Nome" sortBy="#{item.nome}">
+		    	<h:outputLabel value="#{item.nome}"/>
+		    </p:column>
+			
+			<p:column headerText="Chave">
+		    	<h:outputLabel value="#{item.chave}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Nome:" for="txtNome"/>
+					<p:inputText id="txtNome" style="width:300px;" value="#{entidade.nome}" required="true" requiredMessage="O campo Nome não pode ser em branco"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Chave:" for="txtChave"/>
+					<p:inputText id="txtChave" style="width:300px;" value="#{entidade.chave}" required="true" requiredMessage="O campo Chave não pode ser em branco"/>
+				</h:panelGrid>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+	</ui:composition>
+</html>
