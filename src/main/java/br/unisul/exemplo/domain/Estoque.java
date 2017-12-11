@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -11,7 +12,7 @@ public class Estoque extends Entidade {
 
 	@JoinColumn
 	@OneToOne
-	private Medicamento medicamento;
+	private Mercadoria mercadoria;
 	
 	@JoinColumn
 	@OneToOne
@@ -20,16 +21,24 @@ public class Estoque extends Entidade {
 	@Column
 	private Integer quantidade;
 	
+	@Transient
+	private Boolean aumentoEstoque;
+	
 	public Estoque() {
-		this.medicamento = new Medicamento();
+		this.mercadoria = new Mercadoria();
 		this.lote = new Lote();
+		this.quantidade = 0;
+		this.aumentoEstoque = false;
 	}
 	
-	public Medicamento getMedicamento() {
-		return medicamento;
+	public Mercadoria getMercadoria() {
+		return mercadoria;
 	}
-	public void setMedicamento(Medicamento medicamento) {
-		this.medicamento = medicamento;
+	public void setMercadoria(Mercadoria mercadoria) {
+		this.mercadoria = mercadoria;
+	}
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 	public Lote getLote() {
 		return lote;
@@ -37,10 +46,13 @@ public class Estoque extends Entidade {
 	public void setLote(Lote lote) {
 		this.lote = lote;
 	}
-	public int getQuantidade() {
+	public Integer getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
+	public Boolean getAumentoEstoque() {
+		return aumentoEstoque;
+	}
+	public void setAumentoEstoque(Boolean aumentoEstoque) {
+		this.aumentoEstoque = aumentoEstoque;
 	}
 }

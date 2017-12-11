@@ -95,6 +95,9 @@ public class LoteDAO implements DAOI<Lote>{
 		
 		if (pesquisa != null){
 			
+			if (pesquisa.getMarca() != null && pesquisa.getMarca().getId() != null && pesquisa.getMarca().getId() != 0)
+				consulta.add(Restrictions.eq("marca.id", pesquisa.getMarca().getId()));
+			
 			if (pesquisa.getLote() != null && !pesquisa.getLote().isEmpty())
 				consulta.add(Restrictions.ilike("lote", pesquisa.getLote(), MatchMode.ANYWHERE));
 			

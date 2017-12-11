@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Dispensação" />
+		<ui:param name="bean" value="#{dispensacaoBean}" />
+		<ui:param name="entidade" value="#{dispensacaoBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir dispensação?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<h:outputLabel value="Paciente"/>
+				<p:selectOneMenu style="width:300px;" value="#{entidade.paciente.id}" filter="true">
+					<f:selectItem itemLabel="Selecione" itemValue="#{null}"/> 
+					<f:selectItems value="#{bean.pacientes}" var="pct" itemLabel="#{pct.cartaoSus} - #{pct.nome}" itemValue="#{pct.id}"/>
+				</p:selectOneMenu>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Data/Hora">
+		    	<h:outputText value="#{item.dataDispensacao}">
+		    		<f:convertDateTime pattern="dd/MM/yyyy"/>
+		    	</h:outputText>
+		    </p:column>
+		
+			<p:column headerText="Paciente" sortBy="#{item.paciente.nome}">
+		    	<h:outputText value="#{item.paciente.nome}"/>
+		    </p:column>
+			
+			<p:column headerText="Responsável">
+		    	<h:outputText value="#{item.responsavel.login}"/>
+		    </p:column>
+		    
+		    <p:column headerText="Tipo de receita">
+		    	<h:outputText value="#{item.tipoReceita.nome}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="botaoEditar"/>
+		
+    	<ui:insert name="botaoRemover">
+	    	<p:commandButton title="Remover" rendered="#{item.responsavel.id eq bean.usuarioLogado.id}" styleClass="fundoBotaoVermelho" icon="fa fa-remove" oncomplete="PF('dialogExclusao').show();" update="formTabela:tabela msg" action="#{bean.prepareExcluir}">
+	    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+	    	</p:commandButton>
+    	</ui:insert>
+		
+		<ui:define name="cadastro">
+			
+			<p:fieldset legend="Informações">
+			
+				<h:panelGrid columns="2">
+					<h:panelGrid columns="1">
+						<h:outputLabel value="Data/Hora" for="txtDataHora"/>
+						<p:calendar id="txtDataHora" size="42" value="#{entidade.dataDispensacao}" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="O campo Data/Hora não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<h:outputLabel value="Paciente" for="txtPaciente"/>
+						<p:selectOneMenu style="width:300px;" value="#{entidade.paciente.id}" filter="true" required="true" requiredMessage="O campo Paciente não pode ser em branco">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/> 
+							<f:selectItems value="#{bean.pacientes}" var="pct" itemLabel="#{pct.cartaoSus} - #{pct.nome}" itemValue="#{pct.id}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<h:outputLabel value="Tipo de receita" for="txtPaciente"/>
+						<p:selectOneMenu style="width:300px;" value="#{entidade.tipoReceita.id}" filter="true">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+							<f:selectItems value="#{bean.tiposReceitas}" var="tr" itemLabel="#{tr.nome}" itemValue="#{tr.id}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+				</h:panelGrid>
+			</p:fieldset>
+			
+			<br/>
+			
+			<p:fieldset legend="Itens" id="fieldItens">
+				
+				<h:panelGrid columns="4" id="adicionaMercadoria">
+					<h:panelGrid columns="1">
+						<h:outputLabel value="Mercadoria" />
+						<p:selectOneMenu value="#{bean.itemDispensacao.mercadoria.id}" style="width:300px;" filter="true">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+							<f:selectItems value="#{bean.mercadorias}" var="mer" itemValue="#{mer.id}" itemLabel="#{mer.nome} #{mer.concentracao} #{mer.unidadeMedida} #{mer.viaAdministracao.nome}"/>
+							<p:ajax event="itemSelect" update="fieldItens" listener="#{bean.buscarEstoque}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<h:outputLabel value="Lote" />
+						<p:selectOneMenu value="#{bean.itemDispensacao.lote.id}" style="width:300px;">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+							<f:selectItems value="#{bean.estoques}" var="est" itemValue="#{est.lote.id}" itemLabel="Lote: #{est.lote.lote} | Marca: #{est.lote.marca.nome} | Qtd. em estoque: #{est.quantidade}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Quantidade de saída:" />
+						<p:inputMask mask="9?999999999999" value="#{bean.itemDispensacao.quantidade}" style="width:100px;"/>
+					</h:panelGrid>
+
+					<p:commandButton title="Adicionar item" styleClass="fundoBotaoVerde" icon="fa fa-plus" update="fieldItens" 
+									action="#{bean.adicionarItem}" process="adicionaMercadoria" style="margin-top: 18px;"/>
+				</h:panelGrid>
+				
+				<br/>
+								
+				<p:dataTable id="tabelaDispensacao" emptyMessage="Sem registros cadastrados" value="#{entidade.itens}" var="itemDisp">
+					
+					<p:column headerText="Mercadoria">
+						<h:outputText value="#{itemDisp.mercadoria.nome}" />
+					</p:column>
+
+					<p:column headerText="Lote">
+						<h:outputText value="#{itemDisp.lote.lote}" />
+					</p:column>
+					
+					<p:column headerText="Quantidade">
+						<h:outputText value="#{itemDisp.quantidade}" />
+					</p:column>
+					
+				</p:dataTable>
+				
+			</p:fieldset>
+		</ui:define>
+	</ui:composition>
+</html>

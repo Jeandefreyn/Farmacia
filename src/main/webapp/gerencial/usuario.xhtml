@@ -49,17 +49,17 @@
 		
 				<h:panelGrid columns="1">
 					<p:outputLabel value="Data de nascimento:" for="txtDataNascimento"/>
-					<p:calendar id="txtDataNascimento" size="40" value="#{entidade.dataNascimento}" required="true" requiredMessage="O campo Data de Nascimento não pode ser em branco" pattern="dd/MM/yyyy"/>
+					<p:calendar id="txtDataNascimento" size="40" value="#{entidade.dataNascimento}" pattern="dd/MM/yyyy"/>
 				</h:panelGrid>
 				
 				<h:panelGrid columns="1">
 					<p:outputLabel value="RG:" for="txtRg"/>
-					<p:inputText id="txtRg" style="width:300px;" value="#{entidade.rg}" required="true" requiredMessage="O campo RG não pode ser em branco"/>
+					<p:inputText id="txtRg" style="width:300px;" value="#{entidade.rg}"/>
 				</h:panelGrid>
 				
 				<h:panelGrid columns="1">
 					<p:outputLabel value="CPF:" for="txtCpf"/>
-					<p:inputMask mask="999.999.999-99" id="txtCpf" style="width:300px;" value="#{entidade.cpf}" required="true" requiredMessage="O campo CPF não pode ser em branco"/>
+					<p:inputMask mask="999.999.999-99" id="txtCpf" style="width:300px;" value="#{entidade.cpf}"/>
 				</h:panelGrid>
 				
 				<h:panelGrid columns="1">
@@ -72,7 +72,7 @@
 
 				<h:panelGrid columns="1">
 					<p:outputLabel value="Profissão:" for="txtProfissao"/>
-					<p:selectOneMenu id="txtProfissao" style="width:282px;" value="#{entidade.profissao.id}">
+					<p:selectOneMenu id="txtProfissao" style="width:282px;" value="#{entidade.profissao.id}" required="true" requiredMessage="O campo Profissão não pode ser em branco">
 						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
 						<f:selectItems var="prof" value="#{bean.profissoes}" itemLabel="#{prof.nome}" itemValue="#{prof.id}"/>
 					</p:selectOneMenu>

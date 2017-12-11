@@ -1,0 +1,8 @@
+# Farmacia
+
+
+- Projeto está configurado para rodar no postgresql;
+- O projeto está configurado para rodar no banco chamado 'sistema';
+- Possui um arquivo na raiz do projeto chamado sql_inicial.sql para rodar no banco após a criação das tabelas;
+- Você pode fazer o login inicial com usuário: 'admin', senha: 'admin';
+- Não precisa criar pasta para salvar as imagens pois já cria automático no C:, chamado 'produtos_imgs';

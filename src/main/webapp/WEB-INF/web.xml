@@ -50,8 +50,8 @@
     	<url-pattern>/base/*</url-pattern>
     	<url-pattern>/gerencial/*</url-pattern>
     	<url-pattern>/localizacao/*</url-pattern>
+    	<url-pattern>/mercadoria/*</url-pattern>
     	<url-pattern>/personalidade/*</url-pattern>
-    	<url-pattern>/dispensacao/*</url-pattern>
     </filter-mapping>
     
 <!--     Duração da sessão -->

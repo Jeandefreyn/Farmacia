@@ -1,5 +1,6 @@
 package br.unisul.exemplo.bean;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,10 +36,16 @@ public class ProdutoTesteBean extends GenericBean<ProdutoTeste>{
 	@Override
 	public void cadastrar() {
 		try {
+			
+			File diretorio = new File("C:/produtos_imgs/teste");
+			
+			if (!diretorio.exists())
+				diretorio.mkdirs();
+			
 			ProdutoTeste teste = this.dao.salvar(this.entidade);
 			
 			Path origem = Paths.get(this.entidade.getCaminhoTemporario());
-			Path destino = Paths.get("C:/produtos_imgs/" + teste.getId()+ ".png");
+			Path destino = Paths.get(diretorio.getAbsolutePath() + "/teste_" + teste.getId()+ ".png");
 			Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
 			
 			Messages.addGlobalInfo(teste.getNome() + " inserido com sucesso");

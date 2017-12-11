@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Estoque" />
+		<ui:param name="bean" value="#{estoqueBean}" />
+		<ui:param name="entidade" value="#{estoqueBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir estoque?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Mercadoria:" />
+				<p:selectOneMenu style="width:282px;" value="#{entidade.mercadoria.id}">
+					<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+					<f:selectItems value="#{bean.mercadorias}" var="merc" itemLabel="#{merc.nome} - #{merc.concentracao} #{merc.unidadeMedida} - #{merc.viaAdministracao.nome}" itemValue="#{merc.id}"/>
+				</p:selectOneMenu>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Mercadoria">
+		    	<h:outputLabel value="#{item.mercadoria.nome} #{item.mercadoria.concentracao} #{item.mercadoria.unidadeMedida} #{item.mercadoria.viaAdministracao.nome}"/>
+		    </p:column>
+			
+			<p:column headerText="Marca">
+		    	<h:outputLabel value="#{item.lote.marca.nome}"/>
+		    </p:column>
+
+			<p:column headerText="Lote">
+		    	<h:outputLabel value="#{item.lote.lote}"/>
+		    </p:column>
+
+			<p:column headerText="Quantidade">
+		    	<h:outputLabel value="#{item.quantidade}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="botaoEditar">
+			<p:commandButton title="Aumentar estoque" icon="fa fa-arrow-up" ajax="true" async="false" oncomplete="PF('dlg').show();" update=":formCadastro:panelForm" action="#{bean.alterar}">
+	    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+	    	</p:commandButton>
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="2">
+			
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Código de barras:"/>
+					<p:inputText style="width:300px;" value="#{entidade.mercadoria.codigoBarra}" disabled="#{entidade.aumentoEstoque}" placeholder="Possível utilizar o leitor de código de barras">
+						<p:ajax event="blur" listener="#{bean.buscarMercadoria}" update="formCadastro"/>
+					</p:inputText>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Mercadoria:" for="txtMercadoria"/>
+					<p:selectOneMenu id="txtMercadoria" style="width:282px;" value="#{entidade.mercadoria.id}" disabled="#{entidade.aumentoEstoque}"
+										required="true" requiredMessage="O campo Mercadoria não pode ser em branco">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems value="#{bean.mercadorias}" var="merc" itemLabel="#{merc.nome} - #{merc.concentracao} #{merc.unidadeMedida} - #{merc.viaAdministracao.nome}" itemValue="#{merc.id}"/>
+						<p:ajax event="itemSelect" listener="#{bean.selecionarMercadoria}" update="formCadastro"/>
+					</p:selectOneMenu>
+					
+				</h:panelGrid>
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Marca:" for="txtMarca"/>
+					<p:selectOneMenu id="txtMarca" style="width:282px;" disabled="#{entidade.aumentoEstoque}" value="#{entidade.lote.marca.id}" required="true" requiredMessage="O campo Marca não pode ser em branco">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems value="#{bean.marcas}" var="mr" itemLabel="#{mr.nome}" itemValue="#{mr.id}"/>
+						<p:ajax listener="#{bean.carregarLotes}" update="lotes"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1" id="lotes">
+					<p:outputLabel value="Lote:" for="txtLote"/>
+					<p:selectOneMenu id="txtLote" style="width:282px;" disabled="#{entidade.aumentoEstoque}" value="#{entidade.lote.id}" required="true" requiredMessage="O campo Lote não pode ser em branco">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+						<f:selectItems value="#{bean.lotes}" var="lot" itemLabel="#{lot.lote}" itemValue="#{lot.id}"/>
+						<p:ajax update="dataValidade" listener="#{bean.selecionarLote}"/>
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" id="dataValidade">
+					<p:outputLabel value="Data de validade:" />
+					<p:calendar value="#{entidade.lote.dataValidade}" disabled="true" pattern="dd/MM/yyyy" size="39"/>
+				</h:panelGrid>
+			
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Quantidade:" />
+					<p:inputMask mask="9?999999999999" value="#{entidade.quantidade}" style="width:300px;"/>
+				</h:panelGrid>
+			
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</html>

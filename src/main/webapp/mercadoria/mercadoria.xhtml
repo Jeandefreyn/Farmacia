@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Mercadoria" />
+		<ui:param name="bean" value="#{mercadoriaBean}" />
+		<ui:param name="entidade" value="#{mercadoriaBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir mercadoria?" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Nome:" />
+				<p:inputText style="width:300px;" value="#{entidade.nome}"/>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Código de barras:"/>
+				<p:inputText style="width:300px;" value="#{entidade.codigoBarra}" placeholder="Possível utilizar o leitor de código de barras">
+					<p:ajax event="blur" listener="#{bean.listar}" update="formTabela"/>
+				</p:inputText>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Nome" sortBy="#{item.nome}">
+		    	<h:outputLabel value="#{item.nome}"/>
+		    </p:column>
+			
+			<p:column headerText="Concentração / Unidade de medida" styleClass="textoCentro">
+		    	<h:outputLabel value="#{item.concentracao} #{item.unidadeMedida}"/>
+		    </p:column>
+			
+			<p:column headerText="Via de administração" styleClass="textoCentro">
+		    	<h:outputLabel value="#{item.viaAdministracao.nome}"/>
+		    </p:column>
+			
+		</ui:define>
+		
+		<ui:define name="cadastro">
+			
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="1" id="imagemMercadoria">
+					<h:outputLabel value="Imagem" />
+					<p:fileUpload auto="true" id="fileUp" mode="advanced" fileUploadListener="#{bean.upload}"/>
+					<p:graphicImage cache="false" value="#{buscarImagemBean.imagem}" width="200" height="200" >
+						<f:param name="parId" value="#{mercadoriaBean.entidade.id}"/>
+						<f:param name="parTabela" value="mercadoria"/>
+					</p:graphicImage>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Nome:" for="txtNome"/>
+						<p:inputText id="txtNome" style="width:300px;" value="#{entidade.nome}" required="true" requiredMessage="O campo Nome não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Via de administração:" for="txtViaAdministracao"/>
+						<p:selectOneMenu id="txtViaAdministracao" value="#{entidade.viaAdministracao.id}" style="width:300px;">
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems var="va" value="#{bean.viasAdministracoes}" itemLabel="#{va.nome}" itemValue="#{va.id}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Concentração:" for="txtConcentracao"/>
+						<p:inputText id="txtConcentracao" style="width:300px;" value="#{entidade.concentracao}" required="true" requiredMessage="O campo Concentração não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Unidade de medida:" for="txtUnidadeMedida"/>
+						<p:inputText id="txtUnidadeMedida" style="width:300px;" value="#{entidade.unidadeMedida}" required="true" requiredMessage="O campo Unidade de medida não pode ser em branco"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Código de barras:"/>
+						<p:inputText style="width:300px;" value="#{entidade.codigoBarra}" placeholder="Possível utilizar o leitor de código de barras"/>
+					</h:panelGrid>
+					
+				</h:panelGrid>
+
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</html>

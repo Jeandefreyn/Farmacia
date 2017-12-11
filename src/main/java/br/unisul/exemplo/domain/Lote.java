@@ -1,5 +1,7 @@
 package br.unisul.exemplo.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,6 +13,9 @@ public class Lote extends Entidade {
 
 	@Column
 	private String lote;
+	
+	@Column
+	private Date dataValidade;
 	
 	@JoinColumn
 	@OneToOne
@@ -31,5 +36,11 @@ public class Lote extends Entidade {
 	}
 	public void setMarca(Marca marca) {
 		this.marca = marca;
+	}
+	public Date getDataValidade() {
+		return dataValidade;
+	}
+	public void setDataValidade(Date dataValidade) {
+		this.dataValidade = dataValidade;
 	}
 }

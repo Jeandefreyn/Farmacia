@@ -14,12 +14,24 @@
 		<ui:param name="mensagemExclusao" value="Excluir paciente?" />
 	
 		<ui:define name="pesquisa">
-			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Cartão SUS:" for="txtCartaoSus"/>
+				<p:inputMask mask="999999999999999" id="txtCartaoSus" style="width:300px;" value="#{entidade.cartaoSus}"/>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Nome:" for="txtNome"/>
+				<p:inputText id="txtNome" style="width:300px;" value="#{entidade.nome}"/>
+			</h:panelGrid>
 		</ui:define>
 	
 		<ui:define name="lista">
 			<p:column headerText="Nome" sortBy="#{item.nome}">
 		    	<h:outputLabel value="#{item.nome}"/>
+		    </p:column>
+			
+			<p:column headerText="Cartão nacional de saúde" styleClass="textoCentro">
+		    	<h:outputLabel value="#{item.cartaoSus}"/>
 		    </p:column>
 			
 		</ui:define>
@@ -33,28 +45,28 @@
 				</h:panelGrid>
 		
 				<h:panelGrid columns="1">
-					<p:outputLabel value="Data de nascimento:" for="txtDataNascimento"/>
-					<p:calendar id="txtDataNascimento" size="40" value="#{entidade.dataNascimento}" required="true" requiredMessage="O campo Data de Nascimento não pode ser em branco" pattern="dd/MM/yyyy"/>
-				</h:panelGrid>
-				
-				<h:panelGrid columns="1">
 					<p:outputLabel value="Cartão SUS:" for="txtCartaoSus"/>
 					<p:inputMask mask="999999999999999" id="txtCartaoSus" style="width:300px;" value="#{entidade.cartaoSus}" required="true" requiredMessage="O campo Cartão SUS não pode ser em branco"/>
 				</h:panelGrid>
 
 				<h:panelGrid columns="1">
-					<p:outputLabel value="RG:" for="txtRg"/>
-					<p:inputText id="txtRg" style="width:300px;" value="#{entidade.rg}" required="true" requiredMessage="O campo RG não pode ser em branco"/>
-				</h:panelGrid>
-				
-				<h:panelGrid columns="1">
 					<p:outputLabel value="CPF:" for="txtCpf"/>
 					<p:inputMask mask="999.999.999-99" id="txtCpf" style="width:300px;" value="#{entidade.cpf}" required="true" requiredMessage="O campo CPF não pode ser em branco"/>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="RG:" for="txtRg"/>
+					<p:inputText id="txtRg" style="width:300px;" value="#{entidade.rg}"/>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Data de nascimento:" for="txtDataNascimento"/>
+					<p:calendar id="txtDataNascimento" size="40" value="#{entidade.dataNascimento}" pattern="dd/MM/yyyy"/>
 				</h:panelGrid>
 				
 				<h:panelGrid columns="1">
 					<p:outputLabel value="Sexo:" for="txtSexo"/>
-					<p:selectOneMenu id="txtSexo" style="width:282px;" value="#{entidade.sexo.id}">
+					<p:selectOneMenu id="txtSexo" style="width:282px;" value="#{entidade.sexo.id}" required="true" requiredMessage="O campo Sexo não pode ser em branco">
 						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
 						<f:selectItems var="sx" value="#{bean.sexos}" itemLabel="#{sx.nome}" itemValue="#{sx.id}"/>
 					</p:selectOneMenu>
@@ -62,7 +74,7 @@
 
 				<h:panelGrid columns="1">
 					<p:outputLabel value="Estado de nascimento:" for="txtEstadoNascimento"/>
-					<p:selectOneMenu id="txtEstadoNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.estado.id}">
+					<p:selectOneMenu id="txtEstadoNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.estado.id}" required="true" requiredMessage="O campo Estado não pode ser em branco">
 						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
 						<f:selectItems var="es" value="#{bean.estados}" itemLabel="#{es.nome}" itemValue="#{es.id}"/>
 						<p:ajax listener="#{bean.carregarCidades}" update=":formCadastro:cidades"/>
@@ -71,7 +83,7 @@
 				
 				<h:panelGrid columns="1" id="cidades">
 					<p:outputLabel value="Cidade de nascimento:" for="txtCidadeNascimento"/>
-					<p:selectOneMenu id="txtCidadeNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.id}">
+					<p:selectOneMenu id="txtCidadeNascimento" style="width:282px;" value="#{entidade.cidadeNascimento.id}" required="true" requiredMessage="O campo Cidade não pode ser em branco">
 						<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
 						<f:selectItems var="cd" value="#{bean.cidades}" itemLabel="#{cd.nome}" itemValue="#{cd.id}"/>
 					</p:selectOneMenu>

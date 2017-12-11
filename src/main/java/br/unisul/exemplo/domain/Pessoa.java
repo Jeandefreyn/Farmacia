@@ -23,11 +23,11 @@ public class Pessoa extends Entidade {
 	@Column
 	private Date dataNascimento;
 	
-	@OneToOne(optional=true)
+	@OneToOne
 	@JoinColumn
 	private Sexo sexo;
 	
-	@OneToOne(optional=true)
+	@OneToOne
 	@JoinColumn
 	private Cidade cidadeNascimento;
 	

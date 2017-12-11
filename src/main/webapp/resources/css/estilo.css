@@ -24,3 +24,11 @@
 .negrito {
 	text-weight: bold !important;	
 }
+
+.backgroundVerde {
+	background-color: #16d95d;
+}
+
+.backgroundVermelho {
+	background-color: #FF6666;
+}

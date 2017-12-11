@@ -98,6 +98,9 @@ public class PacienteDAO implements DAOI<Paciente>{
 			if (pesquisa.getNome() != null && !pesquisa.getNome().isEmpty())
 				consulta.add(Restrictions.ilike("nome", pesquisa.getNome(), MatchMode.ANYWHERE));
 			
+			if (pesquisa.getCartaoSus() != null && !pesquisa.getCartaoSus().isEmpty())
+				consulta.add(Restrictions.eq("cartaoSus", pesquisa.getCartaoSus()));
+			
 			if (pesquisa.getId() != null)
 				consulta.add(Restrictions.eq("id", pesquisa.getId()));
 		}

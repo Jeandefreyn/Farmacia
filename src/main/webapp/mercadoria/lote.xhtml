@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+		
+	<ui:composition template="../_template.xhtml">
+	
+		<ui:param name="modulo" value="Cadastro de Lotes" />
+		<ui:param name="bean" value="#{loteBean}" />
+		<ui:param name="entidade" value="#{loteBean.entidade}" />
+		<ui:param name="mensagemExclusao" value="Excluir lote" />
+	
+		<ui:define name="pesquisa">
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Lote:" />
+				<p:inputText style="width:300px;" value="#{entidade.lote}"/>
+			</h:panelGrid>
+			
+		</ui:define>
+	
+		<ui:define name="lista">
+			<p:column headerText="Lote" sortBy="#{item.lote}">
+		    	<h:outputLabel value="#{item.lote}"/>
+		    </p:column>
+		 
+		 	<p:column headerText="Marca" styleClass="textoCentro">
+		    	<h:outputLabel value="#{item.marca.nome}"/>
+		    </p:column>
+		 
+		</ui:define>
+		
+		<ui:define name="cadastro">
+		
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Lote:" for="txtLote"/>
+				<p:inputText id="txtLote" style="width:318px;" value="#{entidade.lote}" required="true" requiredMessage="O campo Lote não pode ser em branco"/>
+			</h:panelGrid>
+		
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Marca" for="txtMarca"/>
+				<p:selectOneMenu id="txtMarca" value="#{entidade.marca}" style="width:300px;" required="true" requiredMessage="O campo Marca não pode ser em branco"
+								converter="omnifaces.SelectItemsConverter">
+					<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+					<f:selectItems value="#{bean.marcas}" var="mar" itemLabel="#{mar.nome}" itemValue="#{mar}"/>			
+				</p:selectOneMenu>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel value="Data de validade:" for="txtDataValidade"/>
+				<p:calendar id="txtDataValidade" size="42" value="#{entidade.dataValidade}" pattern="dd/MM/yyyy" 
+							required="true" requiredMessage="O campo Data de validade não pode ser em branco"/>
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</html>

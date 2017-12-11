@@ -21,24 +21,26 @@
 	
 		<p:growl id="msg" autoUpdate="true"/>
 	
-		<p:layoutUnit position="center">
-			<h:form id="frmLogin">
-			
-				<p:panel header="#{modulo}" style="width:500px;">
-					<h:panelGrid columns="1">
-						<p:outputLabel value="Login:"/>
-						<p:inputText style="width:300px;" value="#{bean.login}"/>
-			
-						<p:outputLabel value="Senha:"/>
-						<p:password style="width:300px;" value="#{bean.senha}"/>
-					
-						<p:commandButton icon="ui-icon-unlocked" value="Entrar" action="#{bean.fazerLogin}" process="@form"/>
-					</h:panelGrid>			
+		<p:layout fullPage="true" widgetVar="layoutWdgt">
+			<p:layoutUnit position="center">
+				<h:form id="frmLogin">
 				
-				</p:panel>
-			
-			</h:form>
-		</p:layoutUnit>
-	
+					<p:panel header="#{modulo}" style="width:500px;">
+						<h:panelGrid columns="1">
+							<p:outputLabel value="Login:"/>
+							<p:inputText style="width:300px;" value="#{bean.login}"/>
+				
+							<p:outputLabel value="Senha:"/>
+							<p:password style="width:300px;" value="#{bean.senha}"/>
+						
+							<p:commandButton icon="ui-icon-unlocked" value="Entrar" action="#{bean.fazerLogin}" process="@form"/>
+						</h:panelGrid>			
+					
+					</p:panel>
+				
+				</h:form>
+			</p:layoutUnit>
+		
+		</p:layout>
 	</h:body>
 </html>

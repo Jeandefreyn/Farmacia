@@ -29,18 +29,22 @@
 		<property name="show_sql">true</property>
 
 		<!-- Cria as tabelas do banco de dados -->
-<!-- 		<property name="hbm2ddl.auto">create</property>	 -->
-		<property name="hbm2ddl.auto">validate</property>
+		<property name="hbm2ddl.auto">create</property>	
+<!-- 		<property name="hbm2ddl.auto">validate</property> -->
 		
 		<!-- Mapeamento das entidades --> 
 		
 		<!-- BASE -->
-		<mapping class="br.unisul.exemplo.domain.Estado"/>
 		<mapping class="br.unisul.exemplo.domain.TipoReceita"/>
-		<mapping class="br.unisul.exemplo.domain.Cidade"/>
 		<mapping class="br.unisul.exemplo.domain.Sexo"/>
-		<mapping class="br.unisul.exemplo.domain.Endereco"/>
 		<mapping class="br.unisul.exemplo.domain.Profissao"/>
+		<mapping class="br.unisul.exemplo.domain.ViaAdministracao"/>
+		
+		<!-- LOCALIZAÇÃO -->
+		<mapping class="br.unisul.exemplo.domain.Endereco"/>
+		<mapping class="br.unisul.exemplo.domain.Cidade"/>
+		<mapping class="br.unisul.exemplo.domain.Estado"/>
+		
 		
 		<!-- GERENCIAL -->
 		<mapping class="br.unisul.exemplo.domain.Recurso"/>
@@ -51,10 +55,14 @@
 		<mapping class="br.unisul.exemplo.domain.Fabricante"/>
 		<mapping class="br.unisul.exemplo.domain.Marca"/>
 		
-		<!-- DISPENSAÇÃO -->
+		<!-- MERCADORIA -->
 		<mapping class="br.unisul.exemplo.domain.Lote"/>
-		<mapping class="br.unisul.exemplo.domain.Medicamento"/>
+		<mapping class="br.unisul.exemplo.domain.Mercadoria"/>
 		<mapping class="br.unisul.exemplo.domain.Estoque"/>
+		
+		<!-- DISPENSACAO -->
+		<mapping class="br.unisul.exemplo.domain.Dispensacao"/>
+		<mapping class="br.unisul.exemplo.domain.ItemDispensacao"/>
 		
 		<mapping class="br.unisul.exemplo.domain.ProdutoTeste"/> <!-- Apagar depois -->
 	</session-factory>

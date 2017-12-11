@@ -17,7 +17,7 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 	<h:body>
 	
-		<p:growl id="msg" autoUpdate="true"/>
+		<p:growl id="msg" autoUpdate="true" life="1000"/>
 	
 		<p:layout fullPage="true" widgetVar="layoutWdgt">
 			
@@ -35,22 +35,26 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 					            <p:menuitem value="Tipo de Receita" url="/base/tipo_receita.xhtml" icon="fa fa-medkit"/>
 					            <p:menuitem value="Sexo" url="/base/sexo.xhtml" icon="fa fa-mars"/>
 					            <p:menuitem value="Profissão" url="/base/profissao.xhtml" icon="fa fa-archive"/>
+					            <p:menuitem value="Via de Administração" url="/base/via_administracao.xhtml" icon="fa fa-gear"/>
 					        </p:submenu>
 					        <p:submenu label="Localização">
-					            <p:menuitem value="Cidade" url="/localizacao/cidade.xhtml" icon="fa fa-map-marker"/>
+					            <p:menuitem value="Cidade" url="/localizacao/cidade.xhtml" icon="fa fa-building-o"/>
 					            <p:menuitem value="Estado" url="/localizacao/estado.xhtml" icon="fa fa-map-marker" />
 					        </p:submenu>
 					        <p:submenu label="Gerencial">
-					            <p:menuitem value="Recurso" url="/gerencial/recurso.xhtml" icon="fa fa-user-circle" />
+					            <p:menuitem value="Recurso" url="/gerencial/recurso.xhtml" icon="fa fa-list-ul" />
 					            <p:menuitem value="Usuário" url="/gerencial/usuario.xhtml" icon="fa fa-user-circle" />
 					        </p:submenu>
 					        <p:submenu label="Personalidade">
 					            <p:menuitem value="Paciente" url="/personalidade/paciente.xhtml" icon="fa fa-smile-o" />
 					            <p:menuitem value="Fabricante" url="/personalidade/fabricante.xhtml" icon="fa fa-building" />
-					            <p:menuitem value="Marca" url="/personalidade/marca.xhtml" icon="fa fa-cubes" />
 					        </p:submenu>
-					        <p:submenu label="Dispensação">
-					            <p:menuitem value="Lote" url="/dispensacao/lote.xhtml" icon="fa fa-barcode" />
+					        <p:submenu label="Mercadoria">
+					            <p:menuitem value="Dispensação" url="/mercadoria/dispensacao.xhtml" icon="fa fa-ellipsis-v" />
+					            <p:menuitem value="Estoque" url="/mercadoria/estoque.xhtml" icon="fa fa-ellipsis-v" />
+					            <p:menuitem value="Marca" url="/mercadoria/marca.xhtml" icon="fa fa-cubes" />
+					            <p:menuitem value="Lote" url="/mercadoria/lote.xhtml" icon="fa fa-barcode" />
+					            <p:menuitem value="Mercadoria" url="/mercadoria/mercadoria.xhtml" icon="fa fa-maxcdn" />
 					        </p:submenu>
 						</p:menu>
 					
@@ -91,12 +95,16 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 									<ui:insert name="lista"/>									
 									
 								    <p:column headerText="Opções" style="text-align:center;">
-								    	<p:commandButton styleClass="fundoBotaoLaranja" icon="ui-icon-pencil" oncomplete="PF('dlg').show();" update=":formCadastro:panelForm" action="#{bean.alterar}">
-								    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
-								    	</p:commandButton>
-								    	<p:commandButton styleClass="fundoBotaoVermelho" icon="ui-icon-trash" oncomplete="PF('dialogExclusao').show();" update="formTabela:tabela msg" action="#{bean.prepareExcluir}">
-								    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
-								    	</p:commandButton>
+								    	<ui:insert name="botaoEditar">
+									    	<p:commandButton title="Editar" styleClass="fundoBotaoLaranja" icon="fa fa-edit" ajax="true" async="false" oncomplete="PF('dlg').show();" update=":formCadastro:panelForm" action="#{bean.alterar}">
+									    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+									    	</p:commandButton>
+								    	</ui:insert>
+								    	<ui:insert name="botaoRemover">
+									    	<p:commandButton title="Remover" styleClass="fundoBotaoVermelho" icon="fa fa-remove" oncomplete="PF('dialogExclusao').show();" update="formTabela:tabela msg" action="#{bean.prepareExcluir}">
+									    		<f:setPropertyActionListener value="#{item.id}" target="#{entidade.id}"/>
+									    	</p:commandButton>
+								    	</ui:insert>
 								    </p:column>
 								 
 								    <f:facet name="footer">
@@ -112,7 +120,8 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 			</p:layoutUnit>
 			
 			<ui:insert name="dialogs">
-				<p:dialog header="#{modulo}" widgetVar="dlg" resizable="false" draggable="false" modal="true" closable="false" style="max-height:500px; overflow:auto;">
+				<p:dialog header="#{modulo}" widgetVar="dlg" resizable="false" draggable="false" modal="true" closable="false" 
+							style="max-height:500px; max-width:1000px; overflow:auto;">
 			
 					<h:form id="formCadastro">
 					

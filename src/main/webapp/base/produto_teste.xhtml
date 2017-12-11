@@ -36,8 +36,9 @@
 					<p:inputText size="10" value="#{produtoTesteBean.entidade.id}"/>
 					<p:commandButton value="Buscar" actionListener="#{produtoTesteBean.buscarImagem}" update="frmView:telaView"/>
 					<p:outputLabel value="#{produtoTesteBean.entidade.nome}"/>
-					<p:graphicImage cache="false" value="#{produtoTesteViewBean.imagem}">
+					<p:graphicImage cache="false" value="#{buscarImagemBean.imagem}">
 						<f:param name="parId" value="#{produtoTesteBean.entidade.id}"/>
+						<f:param name="parTabela" value="teste"/>
 					</p:graphicImage>
 				</h:panelGrid>
 			</h:form>
